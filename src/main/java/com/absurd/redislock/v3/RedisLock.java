@@ -40,7 +40,7 @@ public class RedisLock extends AbstractRedisLock{
         Thread current = Thread.currentThread();
         long newExpireTime=System.currentTimeMillis()+lockExpire +1;
         newExpireValue = String.valueOf(newExpireTime);
-        if(1 == client.setnx(name, newExpireValue)){
+        if("OK".equals(client.set(name, newExpireValue, "nx", "px", newExpireTime))){
             locked = true;
             setExclusiveOwnerThread(current);
             return true;
