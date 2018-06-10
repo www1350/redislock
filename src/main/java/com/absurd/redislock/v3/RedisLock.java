@@ -15,6 +15,12 @@ public class RedisLock extends AbstractRedisLock{
 
     private volatile String newExpireValue = null;
 
+    private static String releaseLua = "      if redis.call(\"get\",KEYS[1]) == ARGV[1] then\n" +
+            "          return redis.call(\"del\",KEYS[1])\n" +
+            "      else\n" +
+            "          return 0\n" +
+            "      end";
+
     protected final long lockExpire;//锁的有效时长(毫秒)
 
     public RedisLock(Jedis client, String name, long lockExpire) {
@@ -28,11 +34,7 @@ public class RedisLock extends AbstractRedisLock{
 
     @Override
     public void unlock0() {
-        client.eval("      if redis.call(\"get\",KEYS[1]) == ARGV[1] then\n" +
-                "          return redis.call(\"del\",KEYS[1])\n" +
-                "      else\n" +
-                "          return 0\n" +
-                "      end", Lists.newArrayList(name), Lists.newArrayList(newExpireValue));
+        client.eval(releaseLua, Lists.newArrayList(name), Lists.newArrayList(newExpireValue));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class RedisLock extends AbstractRedisLock{
         Thread current = Thread.currentThread();
         long newExpireTime=System.currentTimeMillis()+lockExpire +1;
         newExpireValue = String.valueOf(newExpireTime);
-        if("OK".equals(client.set(name, newExpireValue, "nx", "px", newExpireTime))){
+        if("OK".equals(client.set(name, newExpireValue, "nx", "px", lockExpire))){
             locked = true;
             setExclusiveOwnerThread(current);
             return true;

@@ -15,9 +15,13 @@ public class RedisLock extends AbstractRedisLock{
 
     private final String name;
 
-    private volatile String newExpireValue = null;
-
     private volatile String uuid = null;
+
+    private static String releaseLua = "      if redis.call(\"get\",KEYS[1]) == ARGV[1] then\n" +
+            "          return redis.call(\"del\",KEYS[1])\n" +
+            "      else\n" +
+            "          return 0\n" +
+            "      end";
 
     protected final long lockExpire;//锁的有效时长(毫秒)
 
@@ -32,19 +36,14 @@ public class RedisLock extends AbstractRedisLock{
 
     @Override
     public void unlock0() {
-        client.eval("      if redis.call(\"get\",KEYS[1]) == ARGV[1] then\n" +
-                "          return redis.call(\"del\",KEYS[1])\n" +
-                "      else\n" +
-                "          return 0\n" +
-                "      end", Lists.newArrayList(name), Lists.newArrayList(uuid));
+        client.eval(releaseLua, Lists.newArrayList(name), Lists.newArrayList(uuid));
     }
 
     @Override
     protected boolean tryRedisLock() {
         Thread current = Thread.currentThread();
-        long newExpireTime=System.currentTimeMillis()+lockExpire +1;
         uuid = UUID.randomUUID().toString();
-        if("OK".equals(client.set(name, uuid, "nx", "px", newExpireTime))){
+        if("OK".equals(client.set(name, uuid, "nx", "px", lockExpire))){
             locked = true;
             setExclusiveOwnerThread(current);
             return true;
