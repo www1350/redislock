@@ -1,6 +1,9 @@
 package com.absurd.redislock;
 
 import org.junit.Before;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -17,6 +20,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class BaseTest {
     protected JedisPool jedisPool = null;
+
+    protected RedissonClient redClient = null;
 
     protected ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -40,6 +45,12 @@ public class BaseTest {
         config.setMaxWaitMillis(1000 * 100);
         config.setTestOnBorrow(true);
         jedisPool = new JedisPool(config,"localhost",6379);
+
+
+        Config config2 = new Config();
+        config2.useSingleServer()
+                .setAddress("redis://127.0.0.1:6379");
+        redClient = Redisson.create(config2);
     }
 
 }
