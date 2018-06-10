@@ -4,6 +4,15 @@ import com.absurd.redislock.AbstractRedisLock;
 import redis.clients.jedis.Jedis;
 
 /**
+ * v1版本，
+ * tryLock
+ * 1、setnx key 1
+ * 2、pexpire lockExpire
+ *
+ * release
+ * 1、delete key
+ *
+ * 问题：setnx后崩溃导致锁一直无法释放
  * @author wangwenwei
  * @time 2018/6/7
  */
