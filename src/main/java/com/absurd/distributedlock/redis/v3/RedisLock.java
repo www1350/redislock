@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.v3;
 
-import com.absurd.distributedlock.redis.AbstractRedisLock;
+import com.absurd.distributedlock.AbstractRedisLock;
 import com.google.common.collect.Lists;
 import redis.clients.jedis.Jedis;
 

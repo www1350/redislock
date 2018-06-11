@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.redlock;
 
-import com.absurd.distributedlock.redis.AbstractRedisLock;
+import com.absurd.distributedlock.AbstractRedisLock;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RedissonClient;
 
