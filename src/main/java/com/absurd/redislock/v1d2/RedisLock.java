@@ -9,7 +9,9 @@ import redis.clients.jedis.Jedis;
  * tryLock
  * lua脚本保证原子性，防止setnx后崩溃出现的无法释放锁
  * local r = tonumber(redis.call('SETNX', KEYS[1],ARGV[1]));
+ * if (locked == 1) then
  * redis.call('PEXPIRE',KEYS[1],ARGV[2]);
+ * end
  * return r
  *
  * ARGV传入分别是1和过期时间
@@ -28,9 +30,11 @@ public class RedisLock extends AbstractRedisLock {
 
     protected final long lockExpire;//锁的有效时长(毫秒)
 
-    private static String lockLuaScript = "local r = tonumber(redis.call('SETNX', KEYS[1],ARGV[1]));"
-            + "\nredis.call('PEXPIRE',KEYS[1],ARGV[2]);"
-            + "\nreturn r";
+    private static String lockLuaScript = "local r = tonumber(redis.call('SETNX', KEYS[1],ARGV[1]));\n" +
+            " if (r == 1) then\n" +
+            "  redis.call('PEXPIRE',KEYS[1],ARGV[2]);\n" +
+            " end\n" +
+            " return r";
 
 
     public RedisLock(Jedis client, String name, long lockExpire) {
