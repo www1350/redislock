@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.v1;
 
-import com.absurd.distributedlock.AbstractRedisLock;
+import com.absurd.distributedlock.AbstractLock;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -16,7 +16,7 @@ import redis.clients.jedis.Jedis;
  * @author wangwenwei
  * @time 2018/6/7
  */
-public class RedisLock extends AbstractRedisLock {
+public class RedisLock extends AbstractLock {
     private final Jedis client;
 
     private final String name;

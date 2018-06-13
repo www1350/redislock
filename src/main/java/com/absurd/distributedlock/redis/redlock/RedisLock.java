@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.redlock;
 
-import com.absurd.distributedlock.AbstractRedisLock;
+import com.absurd.distributedlock.AbstractLock;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RedissonClient;
 
@@ -8,7 +8,7 @@ import org.redisson.api.RedissonClient;
  * @author wangwenwei
  * @time 2018/6/7
  */
-public class RedisLock extends AbstractRedisLock {
+public class RedisLock extends AbstractLock {
     private final RedissonClient client;
 
     private final String name;

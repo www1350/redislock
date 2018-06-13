@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.v3d1;
 
-import com.absurd.distributedlock.AbstractRedisLock;
+import com.absurd.distributedlock.AbstractLock;
 import com.google.common.collect.Lists;
 import redis.clients.jedis.Jedis;
 
@@ -26,7 +26,7 @@ import java.util.UUID;
  * @author wangwenwei
  * @time 2018/6/7
  */
-public class RedisLock extends AbstractRedisLock {
+public class RedisLock extends AbstractLock {
     private final Jedis client;
 
     private final String name;

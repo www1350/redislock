@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Lock;
  * @author wangwenwei
  * @time 2018/6/8
  */
-public abstract class AbstractRedisLock implements Lock{
+public abstract class AbstractLock implements Lock{
 
 
     /**
