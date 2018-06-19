@@ -1,5 +1,6 @@
 package com.absurd.distributedlock.redis;
 
+import com.absurd.distributedlock.BaseTest;
 import org.junit.Before;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -8,28 +9,22 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author wangwenwei
- * @time 2018/6/9
+ * @time 2018/6/19
  */
-public class BaseTest {
+public class RedisBaseTest extends BaseTest {
+
     protected JedisPool jedisPool = null;
 
     protected RedissonClient redClient = null;
 
-    protected ExecutorService executorService = Executors.newCachedThreadPool();
 
     protected CountDownLatch countDownLatch = new CountDownLatch(1000);
 
-    protected volatile static Integer[] arr = {0};
-
-    protected static AtomicInteger atomicInteger = new AtomicInteger(0);
 
     protected Lock reetLock = new ReentrantLock();
 
@@ -52,5 +47,6 @@ public class BaseTest {
                 .setAddress("redis://127.0.0.1:6379");
         redClient = Redisson.create(config2);
     }
+
 
 }

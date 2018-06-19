@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.redlock;
 
-import com.absurd.distributedlock.redis.BaseTest;
+import com.absurd.distributedlock.redis.RedisBaseTest;
 import org.junit.Test;
 
 import java.util.concurrent.locks.Lock;
@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Lock;
  * @author wangwenwei
  * @time 2018/6/7
  */
-public class RedisLockTest extends BaseTest {
+public class RedisLockTest extends RedisBaseTest {
 
 
 

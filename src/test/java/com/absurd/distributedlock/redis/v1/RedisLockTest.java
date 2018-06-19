@@ -1,6 +1,6 @@
 package com.absurd.distributedlock.redis.v1;
 
-import com.absurd.distributedlock.redis.BaseTest;
+import com.absurd.distributedlock.redis.RedisBaseTest;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.locks.Lock;
  * @author wangwenwei
  * @time 2018/6/7
  */
-public class RedisLockTest extends BaseTest{
+public class RedisLockTest extends RedisBaseTest{
 
     @Test
     public void lock() throws InterruptedException {
